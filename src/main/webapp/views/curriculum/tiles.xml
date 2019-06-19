@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+ * tiles.xml
+ *
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+	<definition name="curriculum/listCurriculum" extends="master.page">	
+		<put-attribute name="title" value="Curriculum: List" />
+		<put-attribute name="body" value="/views/curriculum/listCurriculum.jsp" />
+	</definition>
+	
+	<definition name="curriculum/createCurriculum" extends="master.page">	
+		<put-attribute name="title" value="Curriculum: Create" />
+		<put-attribute name="body" value="/views/curriculum/createCurriculum.jsp" />
+	</definition>
+	
+	<definition name="curriculum/displayCurriculum" extends="master.page">	
+		<put-attribute name="title" value="Curriculum: Display" />
+		<put-attribute name="body" value="/views/curriculum/displayCurriculum.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editPositionData" extends="master.page">	
+		<put-attribute name="title" value="Position Data" />
+		<put-attribute name="body" value="/views/curriculum/editPositionData.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editEducationData" extends="master.page">	
+		<put-attribute name="title" value="Education Data" />
+		<put-attribute name="body" value="/views/curriculum/editEducationData.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editMiscellaneousData" extends="master.page">	
+		<put-attribute name="title" value="Miscellaneous Data" />
+		<put-attribute name="body" value="/views/curriculum/editMiscellaneousData.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editPersonalData" extends="master.page">	
+		<put-attribute name="title" value="Personal Data" />
+		<put-attribute name="body" value="/views/curriculum/editPersonalData.jsp" />
+	</definition>
+	
+</tiles-definitions>
