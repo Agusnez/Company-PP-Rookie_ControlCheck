@@ -14,10 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import services.AuditService;
 import services.AuditorService;
 import services.MessageService;
 import services.SocialProfileService;
 import controllers.AbstractController;
+import domain.Audit;
 import domain.Auditor;
 import domain.Message;
 import domain.SocialProfile;
@@ -34,6 +36,9 @@ public class DowloadDataAuditorController extends AbstractController {
 
 	@Autowired
 	private MessageService			messageService;
+	
+	@Autowired
+	private AuditService			auditService;
 
 
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -47,7 +52,8 @@ public class DowloadDataAuditorController extends AbstractController {
 			final Auditor a = this.auditorService.findByPrincipal();
 			final Collection<SocialProfile> sc = this.socialProfileService.findAllByActor(a.getId());
 			final Collection<Message> msgs = this.messageService.messagePerActor(a.getId());
-
+			final Collection<Audit> audits = this.auditService.findAuditsByAuditorId(a.getId());
+			
 			myString += "\r\n\r\n";
 
 			myString += a.getName() + a.getSurnames() + " " + " " + a.getAddress() + " " + a.getEmail() + " " + a.getPhone() + " " + a.getPhoto() + " \r\n";
@@ -58,9 +64,17 @@ public class DowloadDataAuditorController extends AbstractController {
 			myString += "\r\n\r\n";
 			myString += "Messages:\r\n\r\n";
 			for (final Message msg : msgs)
-				myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
-					+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				if(msg.getRecipient() != null) {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				} else {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				}
 			myString += "\r\n\r\n";
+			myString += "Audits:\r\n";
+			for (final Audit audit : audits)
+				myString += audit.getText() + " Score:" + audit.getScore() + " Moment:" + audit.getMoment() + "\r\n";
 
 			response.setContentType("text/plain");
 			response.setHeader("Content-Disposition", "attachment;filename=my_data_as_auditor.txt");
@@ -75,7 +89,9 @@ public class DowloadDataAuditorController extends AbstractController {
 			final Auditor a = this.auditorService.findByPrincipal();
 			final Collection<SocialProfile> sc = this.socialProfileService.findAllByActor(a.getId());
 			final Collection<Message> msgs = this.messageService.messagePerActor(a.getId());
+			final Collection<Audit> audits = this.auditService.findAuditsByAuditorId(a.getId());
 
+			
 			myString += "\r\n\r\n";
 
 			myString += a.getName() + " " + a.getSurnames() + " " + a.getAddress() + " " + a.getEmail() + " " + a.getPhone() + " " + a.getPhoto() + " \r\n";
@@ -86,9 +102,17 @@ public class DowloadDataAuditorController extends AbstractController {
 			myString += "\r\n\r\n";
 			myString += "Mensajes:\r\n\r\n";
 			for (final Message msg : msgs)
-				myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Receptor: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Momento: " + msg.getMoment() + " Asunto: "
-					+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Etiquetas: " + msg.getTags();
+				if(msg.getRecipient() != null) {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				} else {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				}
 			myString += "\r\n\r\n";
+			myString += "Auditorias:\r\n";
+			for (final Audit audit : audits)
+				myString += audit.getText() + " Puntuacion:" + audit.getScore() + " Momento:" + audit.getMoment() + "\r\n";
 
 			response.setContentType("text/plain");
 			response.setHeader("Content-Disposition", "attachment;filename=mis_datos_como_auditor.txt");

@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import services.CompanyService;
 import services.MessageService;
+import services.PositionService;
+import services.ProblemService;
 import services.SocialProfileService;
 import controllers.AbstractController;
 import domain.Company;
 import domain.Message;
+import domain.Position;
+import domain.Problem;
 import domain.SocialProfile;
 
 @Controller
@@ -34,6 +38,12 @@ public class DownloadDataCompanyController extends AbstractController {
 
 	@Autowired
 	private MessageService			messageService;
+	
+	@Autowired
+	private ProblemService			problemService;
+	
+	@Autowired
+	private PositionService			positionService;
 
 
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -47,6 +57,8 @@ public class DownloadDataCompanyController extends AbstractController {
 			final Company c = this.companyService.findByPrincipal();
 			final Collection<SocialProfile> sc = this.socialProfileService.findAllByActor(c.getId());
 			final Collection<Message> msgs = this.messageService.messagePerActor(c.getId());
+			final Collection<Problem> problems = this.problemService.findProblemByCompanyId(c.getId());
+			final Collection<Position> positions = this.positionService.findPositionsByCompanyId(c.getId());
 
 			myString += "\r\n\r\n";
 
@@ -58,8 +70,21 @@ public class DownloadDataCompanyController extends AbstractController {
 			myString += "\r\n\r\n";
 			myString += "Messages:\r\n\r\n";
 			for (final Message msg : msgs)
-				myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
-					+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				if(msg.getRecipient() != null) {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				} else {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				}
+			myString += "\r\n\r\n";
+			myString += "Problems:\r\n";
+			for (final Problem p : problems)
+				myString += p.getTitle() + " Hint:" + p.getHint() + " Statement:" + p.getStatement() + " Attachments:" + p.getAttachments() + " Final mode:" + p.getFinalMode() + "\r\n";
+			myString += "\r\n\r\n";
+			myString += "Positions:\r\n";
+			for (final Position po : positions)
+				myString += po.getTitle() + " Description:" + po.getDescription()  + " Profile:" + po.getProfile() + " Skills:" + po.getSkills() + " Technologies:" + po.getTechnologies() + " Offered salary:" + po.getOfferedSalary() + "\r\n";
 			myString += "\r\n\r\n";
 
 			response.setContentType("text/plain");
@@ -75,7 +100,9 @@ public class DownloadDataCompanyController extends AbstractController {
 			final Company c = this.companyService.findByPrincipal();
 			final Collection<SocialProfile> sc = this.socialProfileService.findAllByActor(c.getId());
 			final Collection<Message> msgs = this.messageService.messagePerActor(c.getId());
-
+			final Collection<Problem> problems = this.problemService.findProblemByCompanyId(c.getId());
+			final Collection<Position> positions = this.positionService.findPositionsByCompanyId(c.getId());
+			
 			myString += "\r\n\r\n";
 
 			myString += c.getName() + " " + c.getSurnames() + " " + c.getCommercialName() + " " + c.getAddress() + " " + c.getEmail() + " " + c.getPhone() + " " + c.getPhoto() + " \r\n";
@@ -86,8 +113,21 @@ public class DownloadDataCompanyController extends AbstractController {
 			myString += "\r\n\r\n";
 			myString += "Mensajes:\r\n\r\n";
 			for (final Message msg : msgs)
-				myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Receptor: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Momento: " + msg.getMoment() + " Asunto: "
-					+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Etiquetas: " + msg.getTags();
+				if(msg.getRecipient() != null) {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				} else {
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
+							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+				}
+			myString += "\r\n\r\n";
+			myString += "Problemas:\r\n";
+			for (final Problem p : problems)
+				myString += p.getTitle() + " Pista:" + p.getHint() + " Declaración:" + p.getStatement() + " Adjuntos:" + p.getAttachments() + " Modo final:" + p.getFinalMode() + "\r\n";
+			myString += "\r\n\r\n";
+			myString += "Positions:\r\n";
+			for (final Position po : positions)
+				myString += po.getTitle() + " Descripcion:" + po.getDescription()  + " Perfil:" + po.getProfile() + " Aptitudes:" + po.getSkills() + " Tecnologias:" + po.getTechnologies() + " Salario:" + po.getOfferedSalary() + "\r\n";
 			myString += "\r\n\r\n";
 
 			response.setContentType("text/plain");
