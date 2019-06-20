@@ -24,32 +24,27 @@
 				<a href="${attachment}" target="_blank">${attachment}</a><br/>
 		</c:forEach>
 
-<div><spring:message code="application.moment" />:
-<spring:message code="dateFormat" var="format"/>
-<spring:message code="timeFormat" var="timeFormat"/>
-<fmt:formatDate type="date" value="${application.moment }" pattern="${format}" />
-<fmt:formatDate type="time" value="${application.moment }" pattern="${timeFormat}" />
-</div>
+<acme:dateTimeInternacionaliseDisplay code="application.moment" value="${application.moment }" />
 
 <acme:display code="application.status" property="${application.status} "/>
 	
 <acme:display code="application.answer" property="${application.answer} "/>
 
-<div><spring:message code="application.submitMoment" />:
-<spring:message code="dateFormat" var="format"/>
-<spring:message code="timeFormat" var="timeFormat"/>
-<fmt:formatDate type="date" value="${application.submitMoment }" pattern="${format}" />
-<fmt:formatDate type="time" value="${application.momsubmitMomentent }" pattern="${timeFormat}" />
-</div>
+<acme:dateTimeInternacionaliseDisplay code="application.submitMoment" value="${application.submitMoment }" />
 	
 <acme:display code="application.position.ticker" property="${application.position.ticker} "/>
 	
 <acme:display code="application.curriculum" property="${application.curriculum.personalData.statement} "/>
 
-<security:authorize access="hasRole('ROOKIE')">
-	<acme:button name="back" code="application.back" onclick="javascript: relativeRedir('application/rookie/list.do');" />
+<security:authorize access="hasRole('COMPANY')">
+<acme:button name="quolets" code="application.quolets" onclick="javascript: relativeRedir('quolet/company/list.do?applicationId=${application.id}');" />
+<acme:button name="back" code="application.back" onclick="javascript: relativeRedir('application/company/list.do');" />
 </security:authorize>
 
-<security:authorize access="hasRole('COMPANY')">
-	<acme:button name="back" code="application.back" onclick="javascript: relativeRedir('application/company/list.do');" />
+<security:authorize access="hasRole('ROOKIE')">
+<acme:button name="quolets" code="application.quolets" onclick="javascript: relativeRedir('quolet/rookie/list.do?applicationId=${application.id}');" />
+<acme:button name="back" code="application.back" onclick="javascript: relativeRedir('application/rookie/list.do');" />
 </security:authorize>
+
+
+

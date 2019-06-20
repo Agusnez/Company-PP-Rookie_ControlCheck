@@ -22,7 +22,7 @@ import domain.Quolet;
 
 @Controller
 //TODO CAMBIO CONTROL: cambiar nombre nueva clase
-@RequestMapping("/quolet/customer")
+@RequestMapping("/quolet/company")
 public class QuoletCompanyController extends AbstractController {
 
 	@Autowired
@@ -208,10 +208,10 @@ public class QuoletCompanyController extends AbstractController {
 
 		final Integer applicationId = quolet.getApplication().getId();
 
-		result = new ModelAndView("pusit/edit");
+		result = new ModelAndView("quolet/edit");
 		result.addObject("quolet", quolet);
 		result.addObject("banner", banner);
-		result.addObject("autoridad", "customer");
+		result.addObject("autoridad", "company");
 		result.addObject("applicationId", applicationId);
 		result.addObject("messageError", messageCode);
 

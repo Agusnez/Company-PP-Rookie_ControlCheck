@@ -36,6 +36,7 @@
 		<value>/views/provider/messages</value>
 		<value>/views/item/messages</value>
 		<value>/views/sponsorship/messages</value>
+		<value>/views/quolet/messages</value>
 
 	</util:list>
 

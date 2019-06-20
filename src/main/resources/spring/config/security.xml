@@ -202,6 +202,11 @@
 		<security:intercept-url pattern="/sponsorship/provider/sponsor.do" access="hasRole('PROVIDER')" />
 		<security:intercept-url pattern="/sponsorship/provider/list.do" access="hasRole('PROVIDER')" />
 		<security:intercept-url pattern="/sponsorship/provider/edit.do" access="hasRole('PROVIDER')" />
+		
+		<!-- Company: Quolet -->
+		<security:intercept-url pattern="/quolet/company/**" access="hasRole('COMPANY')" />
+		<!-- Rookie: Quolet -->
+		<security:intercept-url pattern="/quolet/rookie/**" access="hasRole('ROOKIE')" />
 
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 

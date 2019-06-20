@@ -14,4 +14,7 @@ public interface QuoletRepository extends JpaRepository<Quolet, Integer> {
 
 	@Query("select q from Quolet q where q.application.id = ?1")
 	Collection<Quolet> quoletsPerApplicationId(int applicationId);
+
+	@Query("select q from Quolet q where q.application.id = ?1 and q.finalMode = true")
+	Collection<Quolet> quoletsPublishedPerApplicationId(int applicationId);
 }

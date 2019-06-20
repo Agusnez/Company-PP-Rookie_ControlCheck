@@ -53,17 +53,16 @@ public class QuoletService {
 		authority.setAuthority(Authority.COMPANY);
 		Assert.isTrue((actor.getUserAccount().getAuthorities().contains(authority)));
 
-		final Application app = this.applicationService.findOne(applicationId);
+		final Company company = this.companyService.findByPrincipal();
 
-		//		final Date currentMoment = new Date(System.currentTimeMillis());
-		//		final String ticker = this.generateTicker(currentMoment);
+		final Application app = this.applicationService.findOne(applicationId);
 
 		Quolet result;
 
 		result = new Quolet();
 
 		result.setApplication(app);
-		//		result.setTicker(ticker);
+		result.setCompany(company);
 
 		return result;
 
@@ -113,10 +112,6 @@ public class QuoletService {
 				quolet.setPublicationMoment(moment);
 			} else
 				Assert.isNull(quolet.getPublicationMoment());
-
-			final Date currentMoment = new Date(System.currentTimeMillis());
-			final String ticker = this.generateTicker(currentMoment);
-			quolet.setTicker(ticker);
 
 			result = this.quoletRepository.save(quolet);
 		}
@@ -236,6 +231,10 @@ public class QuoletService {
 			quolet.setCompany(quoletNew.getCompany());
 			quolet.setFinalMode(false);
 
+			final Date currentMoment = new Date(System.currentTimeMillis());
+			final String ticker = this.generateTicker(currentMoment);
+			quolet.setTicker(ticker);
+
 			this.validator.validate(quolet, binding);
 
 			result = quolet;
@@ -244,6 +243,7 @@ public class QuoletService {
 			final Quolet quoletBBDD = this.findOne(quolet.getId());
 
 			quolet.setCompany(quoletBBDD.getCompany());
+			quolet.setTicker(quoletBBDD.getTicker());
 
 			this.validator.validate(quolet, binding);
 
@@ -253,6 +253,12 @@ public class QuoletService {
 
 		return result;
 
+	}
+
+	public Collection<Quolet> quoletsPublishedPerApplicationId(final int applicationId) {
+		final Collection<Quolet> res = this.quoletRepository.quoletsPublishedPerApplicationId(applicationId);
+
+		return res;
 	}
 
 }
