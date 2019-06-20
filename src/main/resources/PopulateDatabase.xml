@@ -3175,6 +3175,16 @@
 		</property>
 		<property name="rookie" ref="rookie14" />
 	</bean>
+	
+	<!-- Quolets -->
+	<bean id="quoletTEST1" class="domain.Quolet">
+	<property name="ticker" value="19:AB:06:12:20" />
+	<property name="body" value="I only want and advise about that" />
+	<property name="picture" value="https://image.freepik.com/vector-gratis/coleccion-logotipos-modernos-redes-sociales-acuarela_1361-346.jpg"/>
+	<property name="finalMode" value="false" />
+	<property name="company" ref="company1"	/>
+	<property name="application" ref="application2" />
+	</bean>
 
 	<!-- Configuration -->
 	<bean id="configuration" class="domain.Configuration">

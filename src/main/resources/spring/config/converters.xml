@@ -88,6 +88,9 @@
 		<bean class="converters.ItemToStringConverter"/>
 		<bean class="converters.StringToItemConverter"/>
 		
+		<bean class="converters.QuoletToStringConverter"/>
+		<bean class="converters.StringToQuoletConverter"/>
+		
 	</util:list>
 	
 </beans>
