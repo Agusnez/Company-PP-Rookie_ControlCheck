@@ -66,7 +66,6 @@ public class Quolet extends DomainEntity {
 		this.body = body;
 	}
 
-	@NotBlank
 	@SafeHtml
 	@URL
 	public String getPicture() {
