@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.QuoletRepository;
 import security.Authority;
@@ -36,6 +38,9 @@ public class QuoletService {
 
 	@Autowired
 	private CompanyService		companyService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	//Simple CRUD Methods
@@ -68,16 +73,12 @@ public class QuoletService {
 
 		final Quolet quolet = this.quoletRepository.findOne(quoletId);
 
-		Assert.notNull(quolet);
-
 		return quolet;
 	}
 
 	public Collection<Quolet> findAll() {
 
 		final Collection<Quolet> quolets = this.quoletRepository.findAll();
-
-		Assert.notNull(quolets);
 
 		return quolets;
 	}
@@ -181,7 +182,7 @@ public class QuoletService {
 	}
 
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	public Boolean quoletSecurity(final int quoletId) {
+	public Boolean quoletSecurityCompany(final int quoletId) {
 		Boolean res = false;
 
 		final Quolet quolet = this.findOne(quoletId);
@@ -194,6 +195,64 @@ public class QuoletService {
 			res = true;
 
 		return res;
+	}
+
+	public Collection<Quolet> quoletsPerApplicationId(final int applicationId) {
+
+		final Collection<Quolet> res = this.quoletRepository.quoletsPerApplicationId(applicationId);
+
+		return res;
+	}
+
+	public Boolean existQuolet(final int quoletId) {
+		Boolean res = false;
+
+		final Quolet quolet = this.findOne(quoletId);
+
+		if (quolet != null)
+			res = true;
+
+		return res;
+
+	}
+
+	public Boolean existQuoletPost(final Quolet quolet) {
+		Boolean res = false;
+
+		if ((quolet.getId() != 0 && this.findOne(quolet.getId()) != null) || quolet.getApplication() != null || (quolet.getApplication() != null && this.applicationService.existApplication(quolet.getApplication().getId())))
+			res = true;
+
+		return res;
+	}
+
+	public Quolet reconstruct(final Quolet quolet, final BindingResult binding) {
+
+		Quolet result = quolet;
+		Assert.notNull(quolet);
+		final Quolet quoletNew = this.create(quolet.getApplication().getId());
+
+		if (quolet.getId() == 0) {
+
+			quolet.setCompany(quoletNew.getCompany());
+			quolet.setFinalMode(false);
+
+			this.validator.validate(quolet, binding);
+
+			result = quolet;
+		} else {
+
+			final Quolet quoletBBDD = this.findOne(quolet.getId());
+
+			quolet.setCompany(quoletBBDD.getCompany());
+
+			this.validator.validate(quolet, binding);
+
+			result = quolet;
+
+		}
+
+		return result;
+
 	}
 
 }

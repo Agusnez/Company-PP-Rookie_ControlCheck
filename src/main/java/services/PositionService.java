@@ -350,6 +350,8 @@ public class PositionService {
 
 			this.validator.validate(position, binding);
 
+			result = position;
+
 		}
 
 		return result;

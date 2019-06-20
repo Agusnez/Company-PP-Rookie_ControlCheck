@@ -3,13 +3,12 @@ package controllers.company;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,7 +49,7 @@ public class QuoletCompanyController extends AbstractController {
 		final Boolean security = this.applicationService.securityCompany(applicationId);
 
 		if (security) {
-			result = new ModelAndView("pusit/display");
+			result = new ModelAndView("quolet/display");
 			result.addObject("autoridad", "company");
 			result.addObject("banner", banner);
 			result.addObject("quolet", quolet);
@@ -65,24 +64,24 @@ public class QuoletCompanyController extends AbstractController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	public ModelAndView list(@RequestParam final int fixUpTaskId) {
+	public ModelAndView list(@RequestParam final int applicationId) {
 		final ModelAndView result;
 		Collection<Quolet> quolets;
 
-		quolets = this.quoletService.pusitsPerFixUpTaskId(fixUpTaskId);
+		quolets = this.quoletService.quoletsPerApplicationId(applicationId);
 
 		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		final Boolean security = this.pusitService.fixUpTaskSecurity(fixUpTaskId);
+		final Boolean security = this.applicationService.securityCompany(applicationId);
 
 		if (security) {
-			result = new ModelAndView("pusit/list");
-			result.addObject("pusits", pusits);
+			result = new ModelAndView("quolet/list");
+			result.addObject("quolets", quolets);
 			result.addObject("banner", banner);
-			result.addObject("autoridad", "customer");
+			result.addObject("autoridad", "company");
 			result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
-			result.addObject("fixUpTaskId", fixUpTaskId);
-			result.addObject("requestURI", "pusit/customer/list.do");
+			result.addObject("applicationId", applicationId);
+			result.addObject("requestURI", "quolet/company/list.do");
 		} else
 			result = new ModelAndView("redirect:/welcome/index.do");
 
@@ -91,94 +90,129 @@ public class QuoletCompanyController extends AbstractController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	public ModelAndView create(@RequestParam final int fixUpTaskId) {
+	public ModelAndView create(@RequestParam final int applicationId) {
 		final ModelAndView result;
-		final Pusit pusit;
+		final Quolet quolet;
 
-		final Boolean security = this.pusitService.fixUpTaskSecurity(fixUpTaskId);
+		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		if (security) {
-			pusit = this.pusitService.create(fixUpTaskId);
-			result = this.createEditModelAndView(pusit);
-		} else
-			result = new ModelAndView("redirect:/welcome/index.do");
+		final Boolean security = this.applicationService.securityCompany(applicationId);
+
+		if (this.applicationService.existApplication(applicationId)) {
+
+			if (security) {
+				quolet = this.quoletService.create(applicationId);
+				result = this.createEditModelAndView(quolet);
+			} else
+				result = new ModelAndView("redirect:/welcome/index.do");
+
+		} else {
+			result = new ModelAndView("misc/notExist");
+			result.addObject("banner", banner);
+		}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	public ModelAndView edit(@RequestParam final int pusitId) {
+	public ModelAndView edit(@RequestParam final int quoletId) {
 		final ModelAndView result;
-		final Pusit pusit;
+		final Quolet quolet;
 
-		final Boolean security = this.pusitService.pusitSecurity(pusitId);
+		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		pusit = this.pusitService.findOne(pusitId);
-		Assert.notNull(pusit);
-		if (!pusit.getFinalMode() && security)
-			result = this.createEditModelAndView(pusit);
-		else
-			result = new ModelAndView("redirect:/welcome/index.do");
+		final Boolean security = this.quoletService.quoletSecurityCompany(quoletId);
+
+		if (this.quoletService.existQuolet(quoletId)) {
+
+			quolet = this.quoletService.findOne(quoletId);
+			Assert.notNull(quolet);
+			if (!quolet.getFinalMode() && security)
+				result = this.createEditModelAndView(quolet);
+			else
+				result = new ModelAndView("redirect:/welcome/index.do");
+
+		} else {
+
+			result = new ModelAndView("misc/notExist");
+			result.addObject("banner", banner);
+		}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	public ModelAndView save(@Valid final Pusit pusit, final BindingResult binding) {
+	public ModelAndView save(@ModelAttribute(value = "quolet") Quolet quolet, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(pusit);
-		else
-			try {
-				this.pusitService.save(pusit);
-				result = new ModelAndView("redirect:list.do?fixUpTaskId=" + pusit.getFixUpTask().getId());
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(pusit, "pusit.commit.error");
-			}
+		final String banner = this.configurationService.findConfiguration().getBanner();
+
+		if (this.quoletService.existQuoletPost(quolet)) {
+
+			quolet = this.quoletService.reconstruct(quolet, binding);
+
+			if (binding.hasErrors())
+				result = this.createEditModelAndView(quolet);
+			else
+				try {
+					this.quoletService.save(quolet);
+					result = new ModelAndView("redirect:list.do?applicationId=" + quolet.getApplication().getId());
+				} catch (final Throwable oops) {
+					result = this.createEditModelAndView(quolet, "quolet.commit.error");
+				}
+		} else {
+			result = new ModelAndView("misc/notExist");
+			result.addObject("banner", banner);
+		}
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	public ModelAndView delete(final Pusit pusit, final BindingResult binding) {
+	public ModelAndView delete(final Quolet quolet, final BindingResult binding) {
 		ModelAndView result;
 
-		try {
-			this.pusitService.delete(pusit);
-			result = new ModelAndView("redirect:list.do?fixUpTaskId=" + pusit.getFixUpTask().getId());
-		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(pusit, "pusit.commit.error");
-		}
+		final String banner = this.configurationService.findConfiguration().getBanner();
+
+		if (quolet != null && this.quoletService.existQuolet(quolet.getId())) {
+			result = new ModelAndView("misc/notExist");
+			result.addObject("banner", banner);
+		} else
+			try {
+				this.quoletService.delete(quolet);
+				result = new ModelAndView("redirect:list.do?applicationId=" + quolet.getApplication().getId());
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(quolet, "quolet.commit.error");
+			}
 
 		return result;
 	}
 
 	// Ancillary methods
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	protected ModelAndView createEditModelAndView(final Pusit pusit) {
+	protected ModelAndView createEditModelAndView(final Quolet quolet) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(pusit, null);
+		result = this.createEditModelAndView(quolet, null);
 
 		return result;
 	}
 
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	protected ModelAndView createEditModelAndView(final Pusit pusit, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Quolet quolet, final String messageCode) {
 		ModelAndView result;
 
 		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		final Integer fixUpTaskId = pusit.getFixUpTask().getId();
+		final Integer applicationId = quolet.getApplication().getId();
 
 		result = new ModelAndView("pusit/edit");
-		result.addObject("pusit", pusit);
+		result.addObject("quolet", quolet);
 		result.addObject("banner", banner);
 		result.addObject("autoridad", "customer");
-		result.addObject("fixUpTaskId", fixUpTaskId);
+		result.addObject("applicationId", applicationId);
 		result.addObject("messageError", messageCode);
 
 		return result;
