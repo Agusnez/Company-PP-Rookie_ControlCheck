@@ -45,3 +45,4 @@
        <form:option value="${value1 }" label="${label1}" />
        <form:option value="${value2 }" label="${label2}" />
  </form:select>
+ <form:errors cssClass="error" path="${path }"></form:errors>

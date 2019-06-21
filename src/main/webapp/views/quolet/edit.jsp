@@ -18,7 +18,7 @@
 	
 	<acme:textbox code="quolet.body" path="body" obligatory="true"/>
 
-	<acme:textbox code="quolet.picture" path="picture" obligatory="true" size="100"/>
+	<acme:textbox code="quolet.picture" path="picture" obligatory="false" size="100"/>
 	
 	<acme:choose path="finalMode" code="problem.finalMode" value1="false" value2="true" label1="No Final" label2="Final"/>
 	
@@ -26,6 +26,9 @@
 	
 	<acme:submit name="save" code="quolet.save" />
 	
+	<jstl:if test="${quolet.id!=0}">
+	<acme:submit name="delete" code="quolet.delete" />
+	</jstl:if>
 	<acme:cancel code="quolet.cancel" url="quolet/company/list.do?applicationId=${applicationId}" />
 
 

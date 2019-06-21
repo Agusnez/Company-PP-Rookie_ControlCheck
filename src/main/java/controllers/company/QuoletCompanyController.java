@@ -43,21 +43,25 @@ public class QuoletCompanyController extends AbstractController {
 		ModelAndView result;
 
 		final String banner = this.configurationService.findConfiguration().getBanner();
-		final Quolet quolet = this.quoletService.findOne(quoletId);
-		final Integer applicationId = quolet.getApplication().getId();
 
-		final Boolean security = this.applicationService.securityCompany(applicationId);
+		if (this.quoletService.existQuolet(quoletId)) {
+			final Quolet quolet = this.quoletService.findOne(quoletId);
+			final Integer applicationId = quolet.getApplication().getId();
+			final Boolean security = this.applicationService.securityCompany(applicationId);
+			if (security) {
+				result = new ModelAndView("quolet/display");
+				result.addObject("autoridad", "company");
+				result.addObject("banner", banner);
+				result.addObject("quolet", quolet);
+				result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
+				result.addObject("applicationId", applicationId);
+			} else
+				result = new ModelAndView("redirect:/welcome/index.do");
 
-		if (security) {
-			result = new ModelAndView("quolet/display");
-			result.addObject("autoridad", "company");
+		} else {
+			result = new ModelAndView("misc/notExist");
 			result.addObject("banner", banner);
-			result.addObject("quolet", quolet);
-			result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
-			result.addObject("applicationId", applicationId);
-		} else
-			result = new ModelAndView("redirect:/welcome/index.do");
-
+		}
 		return result;
 
 	}
@@ -68,22 +72,29 @@ public class QuoletCompanyController extends AbstractController {
 		final ModelAndView result;
 		Collection<Quolet> quolets;
 
-		quolets = this.quoletService.quoletsPerApplicationId(applicationId);
-
 		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		final Boolean security = this.applicationService.securityCompany(applicationId);
+		if (this.applicationService.existApplication(applicationId)) {
 
-		if (security) {
-			result = new ModelAndView("quolet/list");
-			result.addObject("quolets", quolets);
+			quolets = this.quoletService.quoletsPerApplicationId(applicationId);
+
+			final Boolean security = this.applicationService.securityCompany(applicationId);
+
+			if (security) {
+				result = new ModelAndView("quolet/list");
+				result.addObject("quolets", quolets);
+				result.addObject("banner", banner);
+				result.addObject("autoridad", "company");
+				result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
+				result.addObject("applicationId", applicationId);
+				result.addObject("requestURI", "quolet/company/list.do");
+			} else
+				result = new ModelAndView("redirect:/welcome/index.do");
+
+		} else {
+			result = new ModelAndView("misc/notExist");
 			result.addObject("banner", banner);
-			result.addObject("autoridad", "company");
-			result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
-			result.addObject("applicationId", applicationId);
-			result.addObject("requestURI", "quolet/company/list.do");
-		} else
-			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 
 		return result;
 	}
@@ -96,10 +107,8 @@ public class QuoletCompanyController extends AbstractController {
 
 		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		final Boolean security = this.applicationService.securityCompany(applicationId);
-
 		if (this.applicationService.existApplication(applicationId)) {
-
+			final Boolean security = this.applicationService.securityCompany(applicationId);
 			if (security) {
 				quolet = this.quoletService.create(applicationId);
 				result = this.createEditModelAndView(quolet);
@@ -122,10 +131,8 @@ public class QuoletCompanyController extends AbstractController {
 
 		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		final Boolean security = this.quoletService.quoletSecurityCompany(quoletId);
-
 		if (this.quoletService.existQuolet(quoletId)) {
-
+			final Boolean security = this.quoletService.quoletSecurityCompany(quoletId);
 			quolet = this.quoletService.findOne(quoletId);
 			Assert.notNull(quolet);
 			if (!quolet.getFinalMode() && security)

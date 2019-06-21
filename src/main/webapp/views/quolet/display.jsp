@@ -15,7 +15,10 @@
 <h3><acme:display code="quolet.ticker" property="${quolet.ticker} "/></h3>
 
 <jstl:if test="${quolet.publicationMoment != null }">
-<acme:dateTimeInternacionaliseDisplay code="quolet.publicationMoment" value="${application.publicationMoment }" />
+<acme:dateTimeInternacionaliseDisplay code="quolet.publicationMoment" value="${quolet.publicationMoment }" dateFormat="quolet.dateFormat" timeFormat="quolet.timeFormat" />
+</jstl:if>
+<jstl:if test="${quolet.publicationMoment == null }">
+<spring:message code="quolet.publicationMoment" />: <spring:message code="quolet.noPublished"/><br>
 </jstl:if>
 
 <acme:display code="quolet.body" property="${quolet.body} "/>
@@ -25,6 +28,10 @@
 <br>
 
 <security:authorize access="hasRole('COMPANY')">
+<spring:message code="quolet.${quolet.finalMode }" var="res"/>
+<acme:display code="quolet.finalMode" property="${res }"/>
+<br>
+
 <jstl:if test="${!quolet.finalMode }">
 <acme:button name="edit" code="quolet.edit" onclick="javascript: relativeRedir('quolet/company/edit.do?quoletId=${quolet.id}');" />
 </jstl:if>

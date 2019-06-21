@@ -27,20 +27,23 @@ public class QuoletService {
 
 	// Managed Repository ------------------------
 	@Autowired
-	private QuoletRepository	quoletRepository;
+	private QuoletRepository		quoletRepository;
 
 	// Supporting Services -----------------------
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
 
 	@Autowired
-	private ApplicationService	applicationService;
+	private ApplicationService		applicationService;
 
 	@Autowired
-	private CompanyService		companyService;
+	private CompanyService			companyService;
 
 	@Autowired
-	private Validator			validator;
+	private Validator				validator;
+
+	@Autowired
+	private ConfigurationService	configurationService;
 
 
 	//Simple CRUD Methods
@@ -92,6 +95,10 @@ public class QuoletService {
 
 		Quolet result;
 
+		Assert.isTrue(quolet.getCompany().getId() == actor.getId());
+		Assert.isTrue(quolet.getApplication().getProblem().getCompany().getId() == actor.getId());
+		Assert.isTrue(quolet.getApplication().getPosition().getCompany().getId() == actor.getId());
+
 		if (quolet.getId() != 0) {
 
 			final Quolet quoletBBDD = this.findOne(quolet.getId());
@@ -116,12 +123,16 @@ public class QuoletService {
 			result = this.quoletRepository.save(quolet);
 		}
 
+		if (quolet.getPicture() != null) {
+			final String newURL = this.configurationService.checkURL(quolet.getPicture());
+			quolet.setPicture(newURL);
+		}
+
 		Assert.notNull(result);
 
 		return result;
 
 	}
-
 	public void delete(final Quolet quolet) {
 
 		final Actor actor = this.actorService.findByPrincipal();
@@ -146,10 +157,10 @@ public class QuoletService {
 		final String dateStringYear = dateFormatYear.format(currentMoment);
 
 		final DateFormat dateFormatMonth = new SimpleDateFormat("MM");
-		final String dateStringMonth = dateFormatYear.format(currentMoment);
+		final String dateStringMonth = dateFormatMonth.format(currentMoment);
 
 		final DateFormat dateFormatDay = new SimpleDateFormat("dd");
-		final String dateStringDay = dateFormatYear.format(currentMoment);
+		final String dateStringDay = dateFormatDay.format(currentMoment);
 
 		final String alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		final String numeric = "1234567890";
@@ -213,13 +224,17 @@ public class QuoletService {
 
 	public Boolean existQuoletPost(final Quolet quolet) {
 		Boolean res = false;
-
-		if ((quolet.getId() != 0 && this.findOne(quolet.getId()) != null) || quolet.getApplication() != null || (quolet.getApplication() != null && this.applicationService.existApplication(quolet.getApplication().getId())))
-			res = true;
+		if (quolet == null)
+			res = false;
+		else if (quolet.getId() == 0) {
+			if (quolet.getApplication() != null && this.applicationService.existApplication(quolet.getApplication().getId()))
+				res = true;
+		} else if (quolet.getId() != 0)
+			if (this.findOne(quolet.getId()) != null && quolet.getApplication() != null && this.applicationService.existApplication(quolet.getApplication().getId()))
+				res = true;
 
 		return res;
 	}
-
 	public Quolet reconstruct(final Quolet quolet, final BindingResult binding) {
 
 		Quolet result = quolet;
@@ -229,7 +244,6 @@ public class QuoletService {
 		if (quolet.getId() == 0) {
 
 			quolet.setCompany(quoletNew.getCompany());
-			quolet.setFinalMode(false);
 
 			final Date currentMoment = new Date(System.currentTimeMillis());
 			final String ticker = this.generateTicker(currentMoment);

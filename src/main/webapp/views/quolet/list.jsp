@@ -27,6 +27,11 @@
 	
 	<acme:column property="body" titleKey="quolet.body" value= "${row.body}: "/>
 	
+	<display:column titleKey="quolet.picture">
+		<spring:url var="url" value="${row.picture}" />
+		<img src="${url}" width="5%" height="5%"/>
+	</display:column>
+	
 	<security:authorize access="hasRole('COMPANY')">
 	<display:column titleKey="quolet.finalMode"> 
 				<spring:message code="quolet.${row.finalMode }" />

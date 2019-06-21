@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ApplicationService;
 import services.ConfigurationService;
 import services.QuoletService;
 import controllers.AbstractController;
@@ -28,27 +29,9 @@ public class QuoletRookieController extends AbstractController {
 	@Autowired
 	private ConfigurationService	configurationService;
 
+	@Autowired
+	private ApplicationService		applicationService;
 
-	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int quoletId) {
-
-		ModelAndView result;
-
-		final String banner = this.configurationService.findConfiguration().getBanner();
-		final Quolet quolet = this.quoletService.findOne(quoletId);
-		final Integer applicationId = quolet.getApplication().getId();
-
-		result = new ModelAndView("pusit/display");
-		result.addObject("autoridad", "rookie");
-		result.addObject("banner", banner);
-		result.addObject("quolet", quolet);
-		result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
-		result.addObject("applicationId", applicationId);
-
-		return result;
-
-	}
 
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -56,17 +39,31 @@ public class QuoletRookieController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Quolet> quolets;
 
-		quolets = this.quoletService.quoletsPublishedPerApplicationId(applicationId);
-
 		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		result = new ModelAndView("pusit/list");
-		result.addObject("quolets", quolets);
-		result.addObject("banner", banner);
-		result.addObject("autoridad", "rookie");
-		result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
-		result.addObject("applicationId", applicationId);
-		result.addObject("requestURI", "quolet/rookie/list.do");
+		if (this.applicationService.existApplication(applicationId)) {
+
+			quolets = this.quoletService.quoletsPublishedPerApplicationId(applicationId);
+
+			final Boolean security = this.applicationService.securityRookie(applicationId);
+
+			if (security) {
+
+				result = new ModelAndView("quolet/list");
+				result.addObject("quolets", quolets);
+				result.addObject("banner", banner);
+				result.addObject("autoridad", "rookie");
+				result.addObject("language", LocaleContextHolder.getLocale().getLanguage());
+				result.addObject("applicationId", applicationId);
+				result.addObject("requestURI", "quolet/rookie/list.do");
+
+			} else
+				result = new ModelAndView("redirect:/welcome/index.do");
+
+		} else {
+			result = new ModelAndView("misc/notExist");
+			result.addObject("banner", banner);
+		}
 
 		return result;
 	}

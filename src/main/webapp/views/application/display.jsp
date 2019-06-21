@@ -24,13 +24,13 @@
 				<a href="${attachment}" target="_blank">${attachment}</a><br/>
 		</c:forEach>
 
-<acme:dateTimeInternacionaliseDisplay code="application.moment" value="${application.moment }" />
+<acme:dateTimeInternacionaliseDisplay code="application.moment" value="${application.moment }" dateFormat="dateFormat" timeFormat="timeFormat"/>
 
 <acme:display code="application.status" property="${application.status} "/>
 	
 <acme:display code="application.answer" property="${application.answer} "/>
 
-<acme:dateTimeInternacionaliseDisplay code="application.submitMoment" value="${application.submitMoment }" />
+<acme:dateTimeInternacionaliseDisplay code="application.submitMoment" value="${application.submitMoment }" dateFormat="dateFormat" timeFormat="timeFormat"/>
 	
 <acme:display code="application.position.ticker" property="${application.position.ticker} "/>
 	

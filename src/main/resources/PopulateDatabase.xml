@@ -3176,19 +3176,10 @@
 		<property name="rookie" ref="rookie14" />
 	</bean>
 	
-	<!-- Quolets -->
+	<!-- Quolets -->	
 	<bean id="quoletTEST1" class="domain.Quolet">
-	<property name="ticker" value="19:AB:06:12698:20" />
-	<property name="body" value="I only want and advise about that" />
-	<property name="picture" value="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/NYCS-bull-trans-1.svg/75px-NYCS-bull-trans-1.svg.png"/>
-	<property name="finalMode" value="false" />
-	<property name="company" ref="company1"	/>
-	<property name="application" ref="application2" />
-	</bean>
-	
-	<bean id="quoletTEST2" class="domain.Quolet">
 	<property name="ticker" value="19:JC:03:35902:19" />
-	<property name="body" value="Body2" />
+	<property name="body" value="BodyTEST2" />
 	<property name="picture" value="https://cdn.pixabay.com/photo/2012/05/04/10/18/two-47085_960_720.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/06/19 13:00" />
@@ -3196,9 +3187,9 @@
 	<property name="application" ref="application5" />
 	</bean>
 	
-	<bean id="quoletTEST3" class="domain.Quolet">
+	<bean id="quoletTEST2" class="domain.Quolet">
 	<property name="ticker" value="19:LO:03:34687:19" />
-	<property name="body" value="Body3" />
+	<property name="body" value="BodyTEST3" />
 	<property name="picture" value="https://www.clker.com/cliparts/Y/W/6/s/c/k/number-3-design-md.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/05/08 13:00" />
@@ -3206,9 +3197,9 @@
 	<property name="application" ref="application5" />
 	</bean>
 	
-	<bean id="quoletTEST4" class="domain.Quolet">
+	<bean id="quoletTEST3" class="domain.Quolet">
 	<property name="ticker" value="19:ST:03:19036:18" />
-	<property name="body" value="Body4" />
+	<property name="body" value="BodyTEST4" />
 	<property name="picture" value="https://cdn.pixabay.com/photo/2012/04/23/17/07/four-39117_960_720.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/03/31 13:00" />
@@ -3216,9 +3207,9 @@
 	<property name="application" ref="application8" />
 	</bean>
 	
-	<bean id="quoletTEST5" class="domain.Quolet">
+	<bean id="quoletTEST4" class="domain.Quolet">
 	<property name="ticker" value="19:FZ:03:58192:18" />
-	<property name="body" value="Body5" />
+	<property name="body" value="BodyTEST5" />
 	<property name="picture" value="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/NYCS-bull-trans-5.svg/1024px-NYCS-bull-trans-5.svg.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/03/29 13:00" />

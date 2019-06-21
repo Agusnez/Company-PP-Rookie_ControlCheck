@@ -166,4 +166,16 @@ public class ConfigurationService {
 	public void flush() {
 		this.configurationRepository.flush();
 	}
+
+	public String checkURL(final String url) {
+		String newUrl = url;
+		if (newUrl != null) {
+			newUrl = newUrl.replaceAll("'", "");
+			newUrl = newUrl.replaceAll(";", "");
+			newUrl = newUrl.replaceAll("\"", "");
+			newUrl = newUrl.replaceAll("\\s", "");
+		}
+
+		return newUrl;
+	}
 }

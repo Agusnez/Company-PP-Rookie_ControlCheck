@@ -25,6 +25,8 @@
  
 <%@ attribute name="titleKey" required="true" %>
 <%@ attribute name="value" required="true" type="java.util.Date"%>
+<%@ attribute name="dateFormat" required="true" %>
+<%@ attribute name="timeFormat" required="true" %>
 
 
 
@@ -36,9 +38,9 @@
 
 <%-- Definition --%>
 
-<spring:message code="dateFormat" var="format"/>
-	<spring:message code="timeFormat" var="timeFormat"/>
+<spring:message code="${dateFormat}" var="format"/>
+	<spring:message code="${timeFormat}" var="time"/>
 	<display:column titleKey="${titleKey }"> 
 		<fmt:formatDate type="date" value="${value }" pattern="${format}" />
-		<fmt:formatDate type="time" value="${value }" pattern="${timeFormat}" />
+		<fmt:formatDate type="time" value="${value }" pattern="${time}" />
 	</display:column>
