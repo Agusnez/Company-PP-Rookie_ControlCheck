@@ -144,6 +144,7 @@ public class QuoletService {
 		Assert.notNull(quolet);
 		Assert.isTrue(quolet.getId() != 0);
 		Assert.isTrue(quolet.getFinalMode() == false);
+		Assert.isTrue(quolet.getCompany().getId() == actor.getId());
 
 		this.quoletRepository.delete(quolet);
 
