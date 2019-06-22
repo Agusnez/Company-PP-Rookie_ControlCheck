@@ -37,7 +37,7 @@
 				<spring:message code="quolet.${row.finalMode }" />
 	</display:column>
 	
-	<acme:url href="quolet/${autoridad}/display.do?quoletId=${row.id }" code="quolet.display"/>
+	<acme:url href="quolet/company/display.do?quoletId=${row.id }" code="quolet.display"/>
 	</security:authorize>
 	
 	
