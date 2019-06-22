@@ -14,16 +14,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import services.ApplicationService;
 import services.CompanyService;
 import services.MessageService;
 import services.PositionService;
 import services.ProblemService;
+import services.QuoletService;
 import services.SocialProfileService;
 import controllers.AbstractController;
+import domain.Application;
 import domain.Company;
 import domain.Message;
 import domain.Position;
 import domain.Problem;
+import domain.Quolet;
 import domain.SocialProfile;
 
 @Controller
@@ -44,6 +48,14 @@ public class DownloadDataCompanyController extends AbstractController {
 	
 	@Autowired
 	private PositionService			positionService;
+	
+	
+	@Autowired
+	private ApplicationService		applicationService;
+	
+	//TODO: CC
+	@Autowired
+	private QuoletService			quoletService;
 
 
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -59,6 +71,8 @@ public class DownloadDataCompanyController extends AbstractController {
 			final Collection<Message> msgs = this.messageService.messagePerActor(c.getId());
 			final Collection<Problem> problems = this.problemService.findProblemByCompanyId(c.getId());
 			final Collection<Position> positions = this.positionService.findPositionsByCompanyId(c.getId());
+			
+			
 
 			myString += "\r\n\r\n";
 
@@ -83,8 +97,17 @@ public class DownloadDataCompanyController extends AbstractController {
 				myString += p.getTitle() + " Hint:" + p.getHint() + " Statement:" + p.getStatement() + " Attachments:" + p.getAttachments() + " Final mode:" + p.getFinalMode() + "\r\n";
 			myString += "\r\n\r\n";
 			myString += "Positions:\r\n";
-			for (final Position po : positions)
+			for (final Position po : positions) {
 				myString += po.getTitle() + " Description:" + po.getDescription()  + " Profile:" + po.getProfile() + " Skills:" + po.getSkills() + " Technologies:" + po.getTechnologies() + " Offered salary:" + po.getOfferedSalary() + "\r\n";
+				//TODO: CC
+				final Collection<Application> apps = this.applicationService.findByPositionId(po.getId());
+				for (final Application a: apps) {
+					final Collection<Quolet> qs= this.quoletService.quoletsPerApplicationId(a.getId());
+					for (final Quolet q: qs)
+						myString += "> Associated quolet: " + q.getTicker() + " Publication moment:" + q.getPublicationMoment().toString() + " Body:" + q.getBody() + " Picture: " + q.getPicture() + " Final mode: " + q.getFinalMode() + "\r\n";
+					myString += "\r\n";
+				}
+			}
 			myString += "\r\n\r\n";
 
 			response.setContentType("text/plain");
@@ -123,15 +146,24 @@ public class DownloadDataCompanyController extends AbstractController {
 			myString += "\r\n\r\n";
 			myString += "Problemas:\r\n";
 			for (final Problem p : problems)
-				myString += p.getTitle() + " Pista:" + p.getHint() + " Declaración:" + p.getStatement() + " Adjuntos:" + p.getAttachments() + " Modo final:" + p.getFinalMode() + "\r\n";
+				myString += p.getTitle() + " Pista:" + p.getHint() + " Declaracion:" + p.getStatement() + " Adjuntos:" + p.getAttachments() + " Modo final:" + p.getFinalMode() + "\r\n";
 			myString += "\r\n\r\n";
-			myString += "Positions:\r\n";
-			for (final Position po : positions)
+			myString += "Posiciones:\r\n";
+			for (final Position po : positions) {
 				myString += po.getTitle() + " Descripcion:" + po.getDescription()  + " Perfil:" + po.getProfile() + " Aptitudes:" + po.getSkills() + " Tecnologias:" + po.getTechnologies() + " Salario:" + po.getOfferedSalary() + "\r\n";
+				//TODO: CC
+				final Collection<Application> apps = this.applicationService.findByPositionId(po.getId());
+				for (final Application a: apps) {
+					final Collection<Quolet> qs= this.quoletService.quoletsPerApplicationId(a.getId());
+					for (final Quolet q: qs)
+						myString += "> Quolets asociadas: " + q.getTicker() + " Fecha de publicacion:" + q.getPublicationMoment().toString() + " Cuerpo:" + q.getBody() + " Foto: " + q.getPicture() + " Modo final: " + q.getFinalMode() + "\r\n";
+					myString += "\r\n";
+				}
+			}
 			myString += "\r\n\r\n";
 
 			response.setContentType("text/plain");
-			response.setHeader("Content-Disposition", "attachment;filename=mis_datos_como_compañia.txt");
+			response.setHeader("Content-Disposition", "attachment;filename=mis_datos_como_compania.txt");
 			final ServletOutputStream out = response.getOutputStream();
 			out.println(myString);
 			out.flush();
