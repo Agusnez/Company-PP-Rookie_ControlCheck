@@ -275,4 +275,8 @@ public class QuoletService {
 		return res;
 	}
 
+	public void flush() {
+		this.quoletRepository.flush();
+	}
+
 }
