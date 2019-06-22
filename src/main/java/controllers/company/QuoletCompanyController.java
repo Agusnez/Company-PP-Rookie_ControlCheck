@@ -178,21 +178,30 @@ public class QuoletCompanyController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	//TODO CAMBIO CONTROL: cambiar nombre nueva clase
-	public ModelAndView delete(final Quolet quolet, final BindingResult binding) {
+	public ModelAndView delete(Quolet quolet, final BindingResult binding) {
 		ModelAndView result;
 
 		final String banner = this.configurationService.findConfiguration().getBanner();
 
-		if (quolet != null && this.quoletService.existQuolet(quolet.getId())) {
+		if (quolet == null || !this.quoletService.existQuolet(quolet.getId())) {
 			result = new ModelAndView("misc/notExist");
 			result.addObject("banner", banner);
-		} else
-			try {
-				this.quoletService.delete(quolet);
-				result = new ModelAndView("redirect:list.do?applicationId=" + quolet.getApplication().getId());
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(quolet, "quolet.commit.error");
+		} else {
+
+			quolet = this.quoletService.findOne(quolet.getId());
+			if (this.quoletService.quoletSecurityCompany(quolet.getId()))
+				try {
+					this.quoletService.delete(quolet);
+					result = new ModelAndView("redirect:list.do?applicationId=" + quolet.getApplication().getId());
+				} catch (final Throwable oops) {
+					result = this.createEditModelAndView(quolet, "quolet.commit.error");
+				}
+			else {
+				result = new ModelAndView("misc/notExist");
+				result.addObject("banner", banner);
 			}
+
+		}
 
 		return result;
 	}
