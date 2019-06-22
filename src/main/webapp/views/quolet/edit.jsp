@@ -16,7 +16,7 @@
 	<form:hidden path="version" />
 	
 	
-	<acme:textbox code="quolet.body" path="body" obligatory="true"/>
+	<acme:textarea code="quolet.body" path="body" obligatory="true"/>
 
 	<acme:textbox code="quolet.picture" path="picture" obligatory="false" size="100"/>
 	
