@@ -2,6 +2,7 @@
 package services;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +53,9 @@ public class QuoletServiceTest extends AbstractTest {
 			{
 				"company1", "application3", "test", "test", "http://test.com", null
 			},//1. All fine
+			{
+				"company1", "application3", "test", "		", "http://test.com", ConstraintViolationException.class
+			},//2. Body = blank
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.templateCreateQuolet((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
@@ -92,7 +96,7 @@ public class QuoletServiceTest extends AbstractTest {
 	/*
 	 * -------Coverage QuoletService
 	 * ----TOTAL SENTENCE COVERAGE:
-	 * QuoletService = 25.1%
+	 * QuoletService = 24.7%
 	 * 
 	 * ----TOTAL DATA COVERAGE:
 	 * Quolet = 0%
