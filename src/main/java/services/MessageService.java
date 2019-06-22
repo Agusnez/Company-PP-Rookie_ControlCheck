@@ -382,7 +382,7 @@ public class MessageService {
 
 			final Finder finder = this.finderService.findFinderByRookie(rookie.getId());
 
-			if (!finder.getKeyWord().equals("") || !finder.getMaximumDeadline().equals("") || finder.getMaximumSalary() != null || finder.getMinimumSalary() != null) {
+			if (finder.getKeyWord() != null || finder.getMaximumDeadline() != null || finder.getMaximumSalary() != null || finder.getMinimumSalary() != null) {
 
 				final Collection<Position> positions = this.positionService.findPositionsByFinder(finder);
 
