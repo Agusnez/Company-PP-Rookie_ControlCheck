@@ -3179,7 +3179,7 @@
 	<!-- Quolets -->	
 	<bean id="quoletTEST1" class="domain.Quolet">
 	<property name="ticker" value="19:JC:03:35902:19" />
-	<property name="body" value="BodyTEST2" />
+	<property name="body" value="BodyTEST1" />
 	<property name="picture" value="https://cdn.pixabay.com/photo/2012/05/04/10/18/two-47085_960_720.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/06/19 13:00" />
@@ -3189,7 +3189,7 @@
 	
 	<bean id="quoletTEST2" class="domain.Quolet">
 	<property name="ticker" value="19:LO:03:34687:19" />
-	<property name="body" value="BodyTEST3" />
+	<property name="body" value="BodyTEST2" />
 	<property name="picture" value="https://www.clker.com/cliparts/Y/W/6/s/c/k/number-3-design-md.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/05/08 13:00" />
@@ -3199,7 +3199,7 @@
 	
 	<bean id="quoletTEST3" class="domain.Quolet">
 	<property name="ticker" value="19:ST:03:19036:18" />
-	<property name="body" value="BodyTEST4" />
+	<property name="body" value="BodyTEST3" />
 	<property name="picture" value="https://cdn.pixabay.com/photo/2012/04/23/17/07/four-39117_960_720.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/03/31 13:00" />
@@ -3209,7 +3209,7 @@
 	
 	<bean id="quoletTEST4" class="domain.Quolet">
 	<property name="ticker" value="19:FZ:03:58192:18" />
-	<property name="body" value="BodyTEST5" />
+	<property name="body" value="BodyTEST4" />
 	<property name="picture" value="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/NYCS-bull-trans-5.svg/1024px-NYCS-bull-trans-5.svg.png"/>
 	<property name="finalMode" value="true" />
 	<property name="publicationMoment" value="2019/03/29 13:00" />
