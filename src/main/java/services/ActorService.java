@@ -81,6 +81,10 @@ public class ActorService {
 
 	@Autowired
 	private ApplicationService		applicationService;
+	
+	//TODO: CC
+	@Autowired
+	private QuoletService			quoletService;
 
 
 	//Simple CRUD methods --------------------------------------------------
@@ -172,7 +176,7 @@ public class ActorService {
 	public String checkPhone(final String phone) {
 		String res = phone;
 
-		//Esto es para contar el número de dígitos que contiene 
+		//Esto es para contar el nï¿½mero de dï¿½gitos que contiene 
 		int count = 0;
 		for (int i = 0, len = phone.length(); i < len; i++)
 			if (Character.isDigit(phone.charAt(i)))
@@ -341,6 +345,9 @@ public class ActorService {
 		this.socialProfileService.deleteAll(actorId);
 
 		if (actor.getUserAccount().getAuthorities().contains(company)) {
+			
+			// TODO: CC
+			this.quoletService.deleteAll(actorId);
 
 			this.problemService.deleteAll(actorId);
 

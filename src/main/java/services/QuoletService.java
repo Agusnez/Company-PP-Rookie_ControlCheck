@@ -149,6 +149,17 @@ public class QuoletService {
 		this.quoletRepository.delete(quolet);
 
 	}
+	
+	public void deleteAll(final int actorId) {
+
+		final Collection<Quolet> quolets = this.quoletsByCompanyId(actorId);
+
+		if (!quolets.isEmpty())
+			for (final Quolet q : quolets) {
+				this.delete(q);
+			}
+
+	}
 
 	//Other Business Methods
 
@@ -273,6 +284,11 @@ public class QuoletService {
 	public Collection<Quolet> quoletsPublishedPerApplicationId(final int applicationId) {
 		final Collection<Quolet> res = this.quoletRepository.quoletsPublishedPerApplicationId(applicationId);
 
+		return res;
+	}
+	
+	public Collection<Quolet> quoletsByCompanyId(int companyId) {
+		final Collection<Quolet> res = this.quoletRepository.quoletsByCompanyId(companyId);
 		return res;
 	}
 
