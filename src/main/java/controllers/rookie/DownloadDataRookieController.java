@@ -83,7 +83,7 @@ public class DownloadDataRookieController extends AbstractController {
 					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
 							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags() + "\r\n";
 				} else {
-					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: All Moment: " + msg.getMoment() + " Subject: "
 							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags() + "\r\n";;
 				}
 			myString += "\r\n\r\n";
@@ -149,7 +149,7 @@ public class DownloadDataRookieController extends AbstractController {
 							+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Tags: " + msg.getTags();
 					myString += "\r\n";
 				} else {
-					myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Receptor: " + msg.getRecipient() + " " + msg.getRecipient() + " Momento: " + msg.getMoment() + " Asunto: "
+					myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Receptor: Todos Momento: " + msg.getMoment() + " Asunto: "
 							+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Tags: " + msg.getTags();
 					myString += "\r\n";
 				}

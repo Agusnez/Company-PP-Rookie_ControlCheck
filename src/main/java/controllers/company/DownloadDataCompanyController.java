@@ -88,7 +88,7 @@ public class DownloadDataCompanyController extends AbstractController {
 					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
 							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
 				} else {
-					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: All" + " Moment: " + msg.getMoment() + " Subject: "
 							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
 				}
 			myString += "\r\n\r\n";
@@ -104,7 +104,7 @@ public class DownloadDataCompanyController extends AbstractController {
 				for (final Application a: apps) {
 					final Collection<Quolet> qs= this.quoletService.quoletsPerApplicationId(a.getId());
 					for (final Quolet q: qs)
-						myString += "> Associated quolet: " + q.getTicker() + " Publication moment:" + q.getPublicationMoment().toString() + " Body:" + q.getBody() + " Picture: " + q.getPicture() + " Final mode: " + q.getFinalMode() + "\r\n";
+						myString += "> Associated quolet: " + q.getTicker() + " Publication moment:" + q.getPublicationMoment() + " Body:" + q.getBody() + " Picture: " + q.getPicture() + " Final mode: " + q.getFinalMode() + "\r\n";
 					myString += "\r\n";
 				}
 			}
@@ -137,11 +137,11 @@ public class DownloadDataCompanyController extends AbstractController {
 			myString += "Mensajes:\r\n\r\n";
 			for (final Message msg : msgs)
 				if(msg.getRecipient() != null) {
-					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
-							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+					myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Destino: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Fecha: " + msg.getMoment() + " Asunto: "
+							+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Etiquetas: " + msg.getTags();
 				} else {
-					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
-							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+					myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Destino: Todos Fecha: " + msg.getMoment() + " Asunto: "
+							+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Etiquetas: " + msg.getTags();
 				}
 			myString += "\r\n\r\n";
 			myString += "Problemas:\r\n";
@@ -156,7 +156,7 @@ public class DownloadDataCompanyController extends AbstractController {
 				for (final Application a: apps) {
 					final Collection<Quolet> qs= this.quoletService.quoletsPerApplicationId(a.getId());
 					for (final Quolet q: qs)
-						myString += "> Quolets asociadas: " + q.getTicker() + " Fecha de publicacion:" + q.getPublicationMoment().toString() + " Cuerpo:" + q.getBody() + " Foto: " + q.getPicture() + " Modo final: " + q.getFinalMode() + "\r\n";
+						myString += "> Quolets asociadas: " + q.getTicker() + " Fecha de publicacion:" + q.getPublicationMoment() + " Cuerpo:" + q.getBody() + " Foto: " + q.getPicture() + " Modo final: " + q.getFinalMode() + "\r\n";
 					myString += "\r\n";
 				}
 			}

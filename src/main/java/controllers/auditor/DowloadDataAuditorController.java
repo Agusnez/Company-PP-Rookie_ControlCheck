@@ -68,7 +68,7 @@ public class DowloadDataAuditorController extends AbstractController {
 					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
 							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
 				} else {
-					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
+					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: All Moment: " + msg.getMoment() + " Subject: "
 							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
 				}
 			myString += "\r\n\r\n";
@@ -103,11 +103,11 @@ public class DowloadDataAuditorController extends AbstractController {
 			myString += "Mensajes:\r\n\r\n";
 			for (final Message msg : msgs)
 				if(msg.getRecipient() != null) {
-					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Moment: " + msg.getMoment() + " Subject: "
-							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+					myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Destino: " + msg.getRecipient().getName() + " " + msg.getRecipient().getSurnames() + " Fecha: " + msg.getMoment() + " Asunto: "
+							+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Etiquetas: " + msg.getTags();
 				} else {
-					myString += "Sender: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Recipient: " + msg.getRecipient() + " " + msg.getRecipient() + " Moment: " + msg.getMoment() + " Subject: "
-							+ msg.getSubject() + " Body: " + msg.getBody() + " Tags: " + msg.getTags();
+					myString += "Emisor: " + msg.getSender().getName() + " " + msg.getSender().getSurnames() + " Destino: Todos Fecha: " + msg.getMoment() + " Asunto: "
+							+ msg.getSubject() + " Cuerpo: " + msg.getBody() + " Etiquetas: " + msg.getTags();
 				}
 			myString += "\r\n\r\n";
 			myString += "Auditorias:\r\n";
