@@ -32,7 +32,9 @@
 	<acme:column property="position.title" titleKey="audit.position" value= "${row.position.title}: "/>
 	
 	<security:authorize access="hasRole('AUDITOR')">
+		<jstl:if test="${requestURI == 'audit/auditor/list.do' }">
 		<acme:url href="audit/auditor/display.do?auditId=${row.id }" code="audit.display" />
+		</jstl:if>
 	</security:authorize>
 
 	</display:table>
